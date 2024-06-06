@@ -1,0 +1,33 @@
+using GrpcTaskStatus = WorkshopApp.Proto.Client.TaskStatus;
+using BllTaskStatus = HomeworkApp.Bll.Enums.TaskStatus;
+
+namespace HomeworkApp.Extensions;
+
+public static class TaskStatusExtensions
+{
+    public static GrpcTaskStatus ToGrpc(this BllTaskStatus src)
+    {
+        return src switch
+        {
+            BllTaskStatus.Draft => GrpcTaskStatus.Draft,
+            BllTaskStatus.ToDo => GrpcTaskStatus.ToDo,
+            BllTaskStatus.InProgress => GrpcTaskStatus.InProgress,
+            BllTaskStatus.Done => GrpcTaskStatus.Done,
+            BllTaskStatus.Canceled => GrpcTaskStatus.Canceled,
+            _ => throw new ArgumentOutOfRangeException(nameof(src), src, null)
+        };
+    }
+    
+    public static BllTaskStatus ToBll(this GrpcTaskStatus src)
+    {
+        return src switch
+        {
+            GrpcTaskStatus.Draft => BllTaskStatus.Draft,
+            GrpcTaskStatus.ToDo => BllTaskStatus.ToDo,
+            GrpcTaskStatus.InProgress => BllTaskStatus.InProgress,
+            GrpcTaskStatus.Done => BllTaskStatus.Done,
+            GrpcTaskStatus.Canceled => BllTaskStatus.Canceled,
+            _ => throw new ArgumentOutOfRangeException(nameof(src), src, null)
+        };
+    }
+}
